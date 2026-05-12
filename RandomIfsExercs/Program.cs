@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using RandomIfsExercs.Models;
+using System.Linq;
+using System.Text.Json;
 
 namespace RandomIfsExercs
 {
@@ -7,7 +9,10 @@ namespace RandomIfsExercs
         static void Main()
         {
             Console.WriteLine("This is a simple username and password console app, if you want to know more about how it works type .help");
-            Dictionary<string, string> usernamePasswordHolders = new Dictionary<string, string>();
+            //Dictionary<string, string> usernamePasswordHolders = new Dictionary<string, string>();
+            Dictionary<string, string> usernamePasswordHolders = LoadUsers();
+            
+            
             while (true)
             {
                 Console.Write("> ");
@@ -53,16 +58,21 @@ namespace RandomIfsExercs
                 }
 
             }
+
+
         }
 
         public static void AddUser(string[] arguments, Dictionary<string, string> users)
         {
             if (users.ContainsKey(arguments[1]))
             {
+
                 Console.WriteLine("User already exists!");
                 return;
             }
+            User user = new User(arguments[1], arguments[2]);
             users.Add(arguments[1], arguments[2]);
+            SaveUsers(users);
             Console.WriteLine($"Added {arguments[1]} to the dictionary!");
 
         }
@@ -73,6 +83,7 @@ namespace RandomIfsExercs
                 return;
 
             users[arguments[1]] = arguments[3];
+            SaveUsers(users);
             Console.WriteLine($"User {arguments[1]}'s password change was successfull!");
 
         }
@@ -91,6 +102,7 @@ namespace RandomIfsExercs
             {
 
                 users.Remove(arguments[1]);
+                SaveUsers(users);
                 Console.WriteLine("User deleted");
             }
             else
@@ -150,6 +162,34 @@ namespace RandomIfsExercs
                 return false;
 
         }
+        public static string UsersJsonSerializer(Dictionary<string, string> users)
+        {
+            string res = JsonSerializer.Serialize(users, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            });
+            return res;
+        }
 
+        public static void SaveUsers(Dictionary<string, string> users)
+        {
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "users.json");
+            string json = UsersJsonSerializer(users);
+            File.WriteAllText(path, json);
+        }
+
+        public static Dictionary<string, string> LoadUsers()
+        {
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "users.json");
+
+            if (!File.Exists(path))
+            {
+                return new Dictionary<string, string>();
+            }
+
+            string json = File.ReadAllText(path);
+
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+        }
     }
 }

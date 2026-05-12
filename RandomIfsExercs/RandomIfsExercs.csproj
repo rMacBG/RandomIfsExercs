@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Interfaces\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
