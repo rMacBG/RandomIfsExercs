@@ -18,7 +18,7 @@ namespace RandomIfsExercs
                 if (arguments.Length == 0)
                     continue;
 
-                string command = arguments[0];
+                string command = arguments[0].ToLower();
                 switch (command)
                 {
                     case ".help":
