@@ -57,7 +57,12 @@ namespace RandomIfsExercs
 
         public static void AddUser(string[] arguments, Dictionary<string, string> users)
         {
-            users.Add(arguments[1], arguments[2]);
+            if (users.ContainsKey(arguments[1]))
+            {
+                Console.WriteLine("User already exists!");
+                return;
+            }
+                users.Add(arguments[1], arguments[2]);
             Console.WriteLine($"Added {arguments[1]} to the dictionary!");
 
         }
