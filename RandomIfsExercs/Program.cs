@@ -80,15 +80,14 @@ namespace RandomIfsExercs
             }
         }
 
-        public static Dictionary<string, string> AddUser(string[] arguments, Dictionary<string, string> users)
+        public static void AddUser(string[] arguments, Dictionary<string, string> users)
         {
             users.Add(arguments[1], arguments[2]);
             Console.WriteLine($"Added {arguments[1]} to the dictionary!");
 
-            return users;
         }
 
-        public static Dictionary<string, string> EditUser(string[] arguments, Dictionary<string, string> users)
+        public static void EditUser(string[] arguments, Dictionary<string, string> users)
         {
             
                 if (arguments[0] == "edit" && arguments.Length >= 4)
@@ -103,7 +102,7 @@ namespace RandomIfsExercs
                     }
 
                 }
-            return users;
+            
         }
 
         public static void DeleteUser(string[] arguments, Dictionary<string, string> users)
