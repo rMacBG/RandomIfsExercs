@@ -17,65 +17,40 @@ namespace RandomIfsExercs
 
                 if (arguments.Length == 0)
                     continue;
-               
-                try
+
+                string command = arguments[0];
+                switch (command)
                 {
-                    if (arguments[0].ToLower() == "stop")
+                    case ".help":
+                        UserHelp();
                         break;
-                    if (arguments[0].ToLower() == ".help")
-                    {
-                        Console.WriteLine("""
-                        This command shows what commands could be used
-                        stop - exits the program
-                        help - shows this little guide
-                        add (add arg1 arg2) - adds a new username to the dictionary with the 2 arguments
-                        show - shows whether there are usernames or not
-                        edit (edit arg1 arg2 arg3) - edits a username's password by checking if the user exists and if the password is correct, 
-                        if both arguments are correct the user's password is changed to the arg3 value
-                        delete (delete arg1 arg2) - deletes a user from the dictionary, but before deleting its followed by a confirmation menu
-                        """);
-
-                    }
-                    if (arguments[0].ToLower() == "add" && arguments.Length >=3)
-                    {
-                       AddUser(arguments, usernamePasswordHolders);
-                    }
-
-                    if (arguments[0].ToLower() == "show")
-                    {
-
-                        ShowUsers(arguments, usernamePasswordHolders);
-                        
-                    }
-                    try
-                    {
-                        //if (arguments[0] == "edit" && arguments[1] != null && arguments[2] != null && arguments[3] != null)
-                        if(arguments[0] == "edit" && arguments.Length >= 4)
+                    case "add":
+                        if (arguments.Length >= 3)
                         {
-                           EditUser(arguments, usernamePasswordHolders);
-
+                            AddUser(arguments, usernamePasswordHolders);
                         }
-                    }
-                    catch (Exception)
-                    {
-
-                        throw new Exception("Not enough parameters were entered!");
-                    }
-
-
-                    if (arguments[0].ToLower() == "delete" && arguments.Length >= 3)
-                    {
-                        DeleteUser(arguments, usernamePasswordHolders);
-                        
-                    }
+                        break;
+                    case "show":
+                        ShowUsers(usernamePasswordHolders);
+                        break;
+                    case "edit":
+                        if (arguments.Length >= 4)
+                        {
+                            EditUser(arguments, usernamePasswordHolders);
+                        }
+                        break;
+                    case "delete":
+                        if (arguments.Length >= 3)
+                        {
+                            DeleteUser(arguments, usernamePasswordHolders);
+                        }
+                        break;
+                    case "stop":
+                        return;
+                    default:
+                        Console.WriteLine("Uknown command");
+                        break;
                 }
-                catch (Exception ex)
-                {
-
-                    throw new Exception(ex.Message);
-                    
-                }
-                
 
             }
         }
@@ -89,20 +64,14 @@ namespace RandomIfsExercs
 
         public static void EditUser(string[] arguments, Dictionary<string, string> users)
         {
-            
-                if (arguments[0] == "edit" && arguments.Length >= 4)
+                if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
                 {
-                    if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
                     {
-                        {
-                            users[arguments[1]] = arguments[3];
+                        users[arguments[1]] = arguments[3];
                         Console.WriteLine($"User {arguments[1]}'s password has been edited successfully!");
-                        }
-
                     }
 
                 }
-            
         }
 
         public static void DeleteUser(string[] arguments, Dictionary<string, string> users)
@@ -130,7 +99,7 @@ namespace RandomIfsExercs
             }
         }
 
-        public static void ShowUsers(string[] arguments, Dictionary<string, string> users)
+        public static void ShowUsers(Dictionary<string, string> users)
         {
             if (users.Count == 0)
             {
@@ -144,6 +113,20 @@ namespace RandomIfsExercs
                     Console.WriteLine($"Username: {item.Key} | Password: {item.Value}");
                 }
             }
+        }
+
+        public static void UserHelp()
+        {
+            Console.WriteLine("""
+                        This command shows what commands could be used
+                        stop - exits the program
+                        help - shows this little guide
+                        add (add arg1 arg2) - adds a new username to the dictionary with the 2 arguments
+                        show - shows whether there are usernames or not
+                        edit (edit arg1 arg2 arg3) - edits a username's password by checking if the user exists and if the password is correct, 
+                        if both arguments are correct the user's password is changed to the arg3 value
+                        delete (delete arg1 arg2) - deletes a user from the dictionary, but before deleting its followed by a confirmation menu
+                        """);
         }
 
     }
