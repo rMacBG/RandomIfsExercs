@@ -62,46 +62,44 @@ namespace RandomIfsExercs
                 Console.WriteLine("User already exists!");
                 return;
             }
-                users.Add(arguments[1], arguments[2]);
+            users.Add(arguments[1], arguments[2]);
             Console.WriteLine($"Added {arguments[1]} to the dictionary!");
 
         }
 
         public static void EditUser(string[] arguments, Dictionary<string, string> users)
         {
-                if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
-                {
-                    {
-                        users[arguments[1]] = arguments[3];
-                        Console.WriteLine($"User {arguments[1]}'s password has been edited successfully!");
-                    }
+            if (UserValidation(arguments, users))
+                return;
 
-                }
+            users[arguments[1]] = arguments[3];
+            Console.WriteLine($"User {arguments[1]}'s password change was successfull!");
+
         }
 
         public static void DeleteUser(string[] arguments, Dictionary<string, string> users)
         {
-            if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
+            if (UserValidation(arguments, users))
+                return;
+
+
+            Console.WriteLine($"Username: {arguments[1]} | {users[arguments[1]]}");
+            Console.WriteLine("Are you sure you want to delete this user?");
+
+            string confrimation = Console.ReadLine().ToLower();
+            if (confrimation == "yes")
             {
-                Console.WriteLine($"Username: {arguments[1]} | {users[arguments[1]]}");
-                Console.WriteLine("Are you sure that you want to delete this user?");
 
-                string confrimation = Console.ReadLine().ToLower();
-                if (confrimation == "yes")
-                {
-
-                    users.Remove(arguments[1]);
-                    Console.WriteLine("User deleted");
-                }
-                else
-                {
-                    Console.WriteLine("User deletion terminated!");
-
-                    Console.WriteLine("Going back to standby mode");
-                }
-
-
+                users.Remove(arguments[1]);
+                Console.WriteLine("User deleted");
             }
+            else
+            {
+                Console.WriteLine("User deletion terminated!");
+
+                Console.WriteLine("Going back to standby mode");
+            }
+
         }
 
         public static void ShowUsers(Dictionary<string, string> users)
@@ -132,6 +130,25 @@ namespace RandomIfsExercs
                         if both arguments are correct the user's password is changed to the arg3 value
                         delete (delete arg1 arg2) - deletes a user from the dictionary, but before deleting its followed by a confirmation menu
                         """);
+        }
+
+        public static bool UserValidation(string[] arguments, Dictionary<string, string> users)
+        {
+
+            if (!users.ContainsKey(arguments[1]))
+            {
+                Console.WriteLine("User does not exist!");
+                return true;
+            }
+
+            else if (users[arguments[1]] != arguments[2])
+            {
+                Console.WriteLine("Invalid password!");
+                return true;
+            }
+            else
+                return false;
+
         }
 
     }
