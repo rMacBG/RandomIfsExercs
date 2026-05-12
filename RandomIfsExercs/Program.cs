@@ -2,7 +2,7 @@
 
 namespace RandomIfsExercs
 {
-    internal class Program
+    public class Program
     {
         static void Main()
         {
@@ -38,39 +38,21 @@ namespace RandomIfsExercs
                     }
                     if (arguments[0].ToLower() == "add" && arguments.Length >=3)
                     {
-                        usernamePasswordHolders.Add(arguments[1], arguments[2]);
-                        Console.WriteLine($"Added {arguments[1]} to the dictionary!");
+                       AddUser(arguments, usernamePasswordHolders);
                     }
 
                     if (arguments[0].ToLower() == "show")
                     {
 
-
-                        if (usernamePasswordHolders.Count == 0)
-                        {
-                            Console.WriteLine("There are no users who have registered!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("All users who have registered");
-                            foreach (var item in usernamePasswordHolders)
-                            {
-                                Console.WriteLine($"Username: {item.Key} | Password: {item.Value}");
-                            }
-                        }
+                        ShowUsers(arguments, usernamePasswordHolders);
+                        
                     }
                     try
                     {
                         //if (arguments[0] == "edit" && arguments[1] != null && arguments[2] != null && arguments[3] != null)
                         if(arguments[0] == "edit" && arguments.Length >= 4)
                         {
-                            if (usernamePasswordHolders.ContainsKey(arguments[1]) && usernamePasswordHolders[arguments[1]] == arguments[2])
-                            {
-                                {
-                                    usernamePasswordHolders[arguments[1]] = arguments[3];
-                                }
-
-                            }
+                           EditUser(arguments, usernamePasswordHolders);
 
                         }
                     }
@@ -83,28 +65,8 @@ namespace RandomIfsExercs
 
                     if (arguments[0].ToLower() == "delete" && arguments.Length >= 3)
                     {
-
-                        if (usernamePasswordHolders.ContainsKey(arguments[1]) && usernamePasswordHolders[arguments[1]] == arguments[2])
-                        {
-                            Console.WriteLine($"Username: {arguments[1]} | {usernamePasswordHolders[arguments[1]]}");
-                            Console.WriteLine("Are you sure that you want to delete this user?");
-
-                            string confrimation = Console.ReadLine().ToLower();
-                            if (confrimation == "yes")
-                            {
-
-                                usernamePasswordHolders.Remove(arguments[1]);
-                                Console.WriteLine("User deleted");
-                            }
-                            else
-                            {
-                                Console.WriteLine("User deletion terminated!");
-
-                                Console.WriteLine("Going back to standby mode");
-                            }
-
-
-                        }
+                        DeleteUser(arguments, usernamePasswordHolders);
+                        
                     }
                 }
                 catch (Exception ex)
@@ -117,5 +79,73 @@ namespace RandomIfsExercs
 
             }
         }
+
+        public static Dictionary<string, string> AddUser(string[] arguments, Dictionary<string, string> users)
+        {
+            users.Add(arguments[1], arguments[2]);
+            Console.WriteLine($"Added {arguments[1]} to the dictionary!");
+
+            return users;
+        }
+
+        public static Dictionary<string, string> EditUser(string[] arguments, Dictionary<string, string> users)
+        {
+            
+                if (arguments[0] == "edit" && arguments.Length >= 4)
+                {
+                    if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
+                    {
+                        {
+                            users[arguments[1]] = arguments[3];
+                        Console.WriteLine($"User {arguments[1]}'s password has been edited successfully!");
+                        }
+
+                    }
+
+                }
+            return users;
+        }
+
+        public static void DeleteUser(string[] arguments, Dictionary<string, string> users)
+        {
+            if (users.ContainsKey(arguments[1]) && users[arguments[1]] == arguments[2])
+            {
+                Console.WriteLine($"Username: {arguments[1]} | {users[arguments[1]]}");
+                Console.WriteLine("Are you sure that you want to delete this user?");
+
+                string confrimation = Console.ReadLine().ToLower();
+                if (confrimation == "yes")
+                {
+
+                    users.Remove(arguments[1]);
+                    Console.WriteLine("User deleted");
+                }
+                else
+                {
+                    Console.WriteLine("User deletion terminated!");
+
+                    Console.WriteLine("Going back to standby mode");
+                }
+
+
+            }
+        }
+
+        public static void ShowUsers(string[] arguments, Dictionary<string, string> users)
+        {
+            if (users.Count == 0)
+            {
+                Console.WriteLine("There are no users who have registered!");
+            }
+            else
+            {
+                Console.WriteLine("All users who have registered");
+                foreach (var item in users)
+                {
+                    Console.WriteLine($"Username: {item.Key} | Password: {item.Value}");
+                }
+            }
+        }
+
     }
 }
