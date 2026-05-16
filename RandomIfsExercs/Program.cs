@@ -9,7 +9,6 @@ namespace RandomIfsExercs
         static void Main()
         {
             Console.WriteLine("This is a simple username and password console app, if you want to know more about how it works type .help");
-            //Dictionary<string, string> usernamePasswordHolders = new Dictionary<string, string>();
             Dictionary<string, string> usernamePasswordHolders = LoadUsers();
             
             
@@ -64,16 +63,7 @@ namespace RandomIfsExercs
 
         public static void AddUser(string[] arguments, Dictionary<string, string> users)
         {
-            if (users.ContainsKey(arguments[1]))
-            {
-
-                Console.WriteLine("User already exists!");
-                return;
-            }
-            User user = new User(arguments[1], arguments[2]);
-            users.Add(arguments[1], arguments[2]);
-            SaveUsers(users);
-            Console.WriteLine($"Added {arguments[1]} to the dictionary!");
+            
 
         }
 
